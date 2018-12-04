@@ -1,8 +1,10 @@
 require 'oystercard'
 
 describe Oystercard do
+  let(:station) { double :station }
+
   it 'checks default balance is zero' do
-    expect(subject.balance).to eq 0
+    expect(subject.balance).to eq Oystercard::DEFAULT_BALANCE
   end
 
   it "adds topup amount to card" do
@@ -18,28 +20,37 @@ describe Oystercard do
       end
 
       it "returns true when card user touches in" do
-        subject.touch_in
-        expect(subject).to be_in_journey
+        subject.touch_in(station)
+        expect(subject.entry_station).to be_truthy
       end
 
       it "deducts fare when card user touches out" do
         expect { subject.touch_out }.to change{ subject.balance }.by(-Oystercard::MINIMUM_FARE)
       end
 
-    end
-  it "returns false when card users touches out" do
-    subject.touch_out
-    expect(subject).to_not be_in_journey
-  end
+      it "remembers entry station" do
+        subject.touch_in(station)
+        expect(subject.entry_station).to eq station
+      end
 
-  it "check default value of in_journey is false" do
-    subject.in_journey?
-    expect(subject).to_not be_in_journey
-  end
+    end
+
+  # it "returns false for in_journey when card users touches out" do
+  #   subject.touch_out
+  #   expect(subject).to_not be_in_journey
+  # end
+
+  # it "check the default value of in_journey is false" do
+  #   subject.in_journey?
+  #   expect(subject).to_not be_in_journey
+  # end
 
   it "checks minimum balance on card for journey" do
     min_fare = Oystercard::MINIMUM_FARE
-    expect { subject.touch_in }.to raise_error ("Insufficient £#{min_fare} balance")
+    expect { subject.touch_in(station) }.to raise_error ("Insufficient £#{min_fare} balance")
   end
 
+  it "sets entry_station to nil when users touches out" do
+    expect(subject.entry_station). to be_falsey
+  end
 end
