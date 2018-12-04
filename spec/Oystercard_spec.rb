@@ -21,6 +21,7 @@ describe Oystercard do
   end
 
   it "returns true when card user touches in" do
+    subject.top_up 2
     subject.touch_in
     expect(subject).to be_in_journey
   end
@@ -33,5 +34,10 @@ describe Oystercard do
   it "check default value of in_journey is false" do
     subject.in_journey?
     expect(subject).to_not be_in_journey
+  end
+
+  it "checks minimum balance on card for journey" do
+    min_fare = Oystercard::MINIMUM_FARE
+    expect { subject.touch_in }.to raise_error ("Insufficient £#{min_fare} balance")
   end
 end
