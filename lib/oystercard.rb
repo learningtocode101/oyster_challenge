@@ -6,7 +6,6 @@ DEFAULT_BALANCE = 0
 
   def initialize
     @balance = DEFAULT_BALANCE
-    #@in_journey = false
     @entry_station = nil
   end
 
@@ -18,7 +17,6 @@ DEFAULT_BALANCE = 0
   def touch_in(station)
     raise "Insufficient £#{MINIMUM_FARE} balance" if @balance < MINIMUM_FARE
     @entry_station = station
-    #@in_journey = true
   end
 
   def touch_out
