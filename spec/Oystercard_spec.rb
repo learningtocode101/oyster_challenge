@@ -18,6 +18,10 @@ describe Oystercard do
   it "deduct fare from card" do
     subject.top_up(10)
     expect { subject.deduct 8 }.to change { subject.balance }.by -8
+  end
 
+  it "returns true when card user touches in" do
+    subject.touch_in
+    expect(subject).to be_in_journey
   end
 end
