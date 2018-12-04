@@ -25,7 +25,12 @@ describe Oystercard do
       end
 
       it "deducts fare when card user touches out" do
-        expect { subject.touch_out }.to change{ subject.balance }.by(-Oystercard::MINIMUM_FARE)
+        expect { subject.touch_out(station) }.to change{ subject.balance }.by(-Oystercard::MINIMUM_FARE)
+      end
+
+      it "displays a list of journeys" do
+        subject.touch_out(station)
+        expect(subject.exit_station).to eq station
       end
 
       it "remembers entry station" do
@@ -43,4 +48,5 @@ describe Oystercard do
   it "sets entry_station to nil when users touches out" do
     expect(subject.entry_station). to be_falsey
   end
+
 end
