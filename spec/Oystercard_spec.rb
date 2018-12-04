@@ -29,4 +29,9 @@ describe Oystercard do
     subject.touch_out
     expect(subject).to_not be_in_journey
   end
+
+  it "check default value of in_journey is false" do
+    subject.in_journey?
+    expect(subject).to_not be_in_journey
+  end
 end
