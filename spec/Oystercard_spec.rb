@@ -9,23 +9,23 @@ describe Oystercard do
     expect{ subject.top_up 1 }.to change { subject.balance }.by 1
   end
 
-  it "raises an error is maximum top up limit is reached" do
-    max_balance = Oystercard::MAXIMUM_BALANCE
-    subject.top_up(max_balance)
-    expect { subject.top_up 1 }.to raise_error("Maximum balance is £#{max_balance}")
-  end
+  context "has a balance of maximum" do
+    before { subject.top_up(Oystercard::MAXIMUM_BALANCE) }
 
-  it "deduct fare from card" do
-    subject.top_up(10)
-    expect { subject.deduct 8 }.to change { subject.balance }.by -8
-  end
+      it "raises an error is maximum top up limit is reached" do
+        max_balance = Oystercard::MAXIMUM_BALANCE
+        expect { subject.top_up 1 }.to raise_error("Maximum balance is £#{max_balance}")
+      end
 
-  it "returns true when card user touches in" do
-    subject.top_up 2
-    subject.touch_in
-    expect(subject).to be_in_journey
-  end
+      it "deduct fare from card" do
+        expect { subject.deduct 8 }.to change { subject.balance }.by -8
+      end
 
+      it "returns true when card user touches in" do
+        subject.touch_in
+        expect(subject).to be_in_journey
+      end
+    end
   it "returns false when card users touches out" do
     subject.touch_out
     expect(subject).to_not be_in_journey
