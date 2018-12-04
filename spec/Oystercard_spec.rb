@@ -17,14 +17,15 @@ describe Oystercard do
         expect { subject.top_up 1 }.to raise_error("Maximum balance is £#{max_balance}")
       end
 
-      it "deduct fare from card" do
-        expect { subject.deduct 8 }.to change { subject.balance }.by -8
-      end
-
       it "returns true when card user touches in" do
         subject.touch_in
         expect(subject).to be_in_journey
       end
+
+      it "deducts fare when card user touches out" do
+        expect { subject.touch_out }.to change{ subject.balance }.by(-Oystercard::MINIMUM_FARE)
+      end
+
     end
   it "returns false when card users touches out" do
     subject.touch_out
@@ -40,4 +41,5 @@ describe Oystercard do
     min_fare = Oystercard::MINIMUM_FARE
     expect { subject.touch_in }.to raise_error ("Insufficient £#{min_fare} balance")
   end
+
 end
