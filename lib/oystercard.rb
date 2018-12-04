@@ -7,7 +7,7 @@ MAXIMUM_BALANCE = 90
   end
 
   def top_up(amount)
-    raise "Maximum balance is £#{MAXIMUM_BALANCE}" if @balance + amount > 90
+    raise "Maximum balance is £#{MAXIMUM_BALANCE}" if @balance + amount > MAXIMUM_BALANCE
     @balance += amount
   end
 
