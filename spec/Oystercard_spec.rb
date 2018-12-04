@@ -6,7 +6,6 @@ describe Oystercard do
   end
 
   it "adds topup amount to card" do
-    subject.top_up(7)
-    expect(subject.balance).to eq 7
+    expect{ subject.top_up 1 }.to change { subject.balance }.by 1
   end
 end
