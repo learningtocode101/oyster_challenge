@@ -24,13 +24,13 @@ describe Oystercard do
     end
   end
     describe '#touch_in' do
-      before { oystercard.top_up(Oystercard::MAXIMUM_BALANCE) }
+      before { oystercard.top_up(Oystercard::MAXIMUM_BALANCE)
+              oystercard.touch_in(station)
+      }
         it "returns true when card user touches in" do
-          oystercard.touch_in(station)
           expect(oystercard.entry_station).to be_truthy
         end
-        it "remembers entry station" do
-          oystercard.touch_in(station)
+        it "records entry station" do
           expect(oystercard.entry_station).to eq [station]
         end
     end
