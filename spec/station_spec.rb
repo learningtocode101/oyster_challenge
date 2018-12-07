@@ -1,16 +1,18 @@
 require 'station'
 describe Station do
 
-  subject {described_class.new(:name, :zone)}
+  subject(:station) {described_class.new(name, zone)}
   let(:name) {double :name}
   let(:zone) {double :zone}
-  
-  it "expects name to equal Bank" do
-    expect(subject.name).to eq(:name)
+  context 'is initialized' do
+    it "know it's name" do
+      expect(station.name).to eq(name)
+    end
+
+    it "knows it's zone" do
+      expect(station.zone).to eq(zone)
+    end
   end
 
-  it "expects zone to equal 1" do
-    expect(subject.zone).to eq(:zone)
-  end
 
 end
