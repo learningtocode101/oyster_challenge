@@ -28,11 +28,13 @@ describe Oystercard do
               oystercard.touch_in(station)
       }
         it "returns true when card user touches in" do
-          expect(oystercard.entry_station).to be_truthy
+          expect(oystercard.journey[:entry_station]).to be_truthy
         end
-        it "records entry station" do
-          expect(oystercard.entry_station).to eq [station]
-        end
+        # commented out as no longer using @entry_station
+        # it "records entry station" do
+        #   expect(oystercard.entry_station).to eq station
+        # end
+        #
     end
 
     describe '#touch_out' do
@@ -40,12 +42,14 @@ describe Oystercard do
       it "deducts fare" do
         expect { oystercard.touch_out(station) }.to change{ oystercard.balance }.by(-Oystercard::MINIMUM_FARE)
       end
-      it "records exit station" do
-        expect(oystercard.exit_station).to eq station
-      end
-      it "clears entry station record" do
-        expect(oystercard.entry_station). to eq []
-      end
+      #commented out as no longer using @exit_station
+      # it "records exit station" do
+      #   expect(oystercard.exit_station).to eq station
+      # end
+      # checking if journey empty by default already
+      # it "clears entry station record" do
+      #   expect(oystercard.entry_station). to eq []
+      # end
     end
 
     it "checks minimum balance on card for journey" do
@@ -53,6 +57,22 @@ describe Oystercard do
       expect { oystercard.touch_in(station) }.to raise_error ("Insufficient £#{min_fare} balance")
     end
 
+    it 'check that journey list empty by default' do
+      expect(oystercard.journey[:entry_station]).to eq nil
 
+      expect(oystercard.journey[:exit_station]).to eq nil
+    end
+
+    it 'checks that #touch_in and #touch_out creates one journey' do
+      oystercard.top_up(1)
+      expect{ oystercard.touch_in(station) }.to change { oystercard.journey[:entry_station] }.to(station)
+    end
+
+    it 'checks that #touch_out added to journey tag' do
+      oystercard.top_up(1)
+      oystercard.touch_in(station)
+      oystercard.touch_out(station)
+      expect(oystercard.journey[:exit_station]).to eq(nil)
+    end
 
 end
