@@ -22,7 +22,7 @@ DEFAULT_BALANCE = 0
 
   def touch_out(station)
     deduct(MINIMUM_FARE)
-    @entry_station = nil
+    @entry_station = []
     @exit_station = station
   end
 

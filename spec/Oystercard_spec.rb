@@ -52,6 +52,7 @@ describe Oystercard do
     end
 
     it "sets entry_station  when users touches out" do
+      oystercard.touch_out(station)
       expect(oystercard.entry_station). to eq []
     end
 
