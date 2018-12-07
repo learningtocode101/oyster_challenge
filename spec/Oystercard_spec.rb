@@ -27,29 +27,22 @@ describe Oystercard do
       before { oystercard.top_up(Oystercard::MAXIMUM_BALANCE)
               oystercard.touch_in(station)
       }
-        it "returns true when card user touches in" do
-          expect(oystercard.journey[:entry_station]).to be_truthy
+        it "in journey becomes true" do
+          expect(oystercard.in_journey?).to eq true
         end
-        # commented out as no longer using @entry_station
-        # it "records entry station" do
-        #   expect(oystercard.entry_station).to eq station
-        # end
-        #
     end
 
     describe '#touch_out' do
-      before { oystercard.touch_out(station) }
+      before { oystercard.touch_out(station)
+              oystercard.top_up(Oystercard::MAXIMUM_BALANCE)
+      }
       it "deducts fare" do
         expect { oystercard.touch_out(station) }.to change{ oystercard.balance }.by(-Oystercard::MINIMUM_FARE)
       end
-      #commented out as no longer using @exit_station
-      # it "records exit station" do
-      #   expect(oystercard.exit_station).to eq station
-      # end
-      # checking if journey empty by default already
-      # it "clears entry station record" do
-      #   expect(oystercard.entry_station). to eq []
-      # end
+      it "in journey becomes false" do
+        allow(oystercard).to receive(:in_journey?).and_return false
+        expect(oystercard.in_journey?).to eq false
+      end
     end
 
     it "checks minimum balance on card for journey" do
