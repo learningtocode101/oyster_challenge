@@ -6,7 +6,8 @@ DEFAULT_BALANCE = 0
 
   def initialize
     @balance = DEFAULT_BALANCE
-    @entry_station = nil
+    @entry_station = []
+    @exit_station = []
   end
 
   def top_up(amount)
@@ -16,7 +17,7 @@ DEFAULT_BALANCE = 0
 
   def touch_in(station)
     raise "Insufficient £#{MINIMUM_FARE} balance" if @balance < MINIMUM_FARE
-    @entry_station = station
+    @entry_station << station
   end
 
   def touch_out(station)
