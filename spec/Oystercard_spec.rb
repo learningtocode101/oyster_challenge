@@ -23,7 +23,7 @@ describe Oystercard do
         end
     end
   end
-    describe '#touh_in' do
+    describe '#touch_in' do
       before { oystercard.top_up(Oystercard::MAXIMUM_BALANCE) }
         it "returns true when card user touches in" do
           oystercard.touch_in(station)
@@ -36,24 +36,23 @@ describe Oystercard do
     end
 
     describe '#touch_out' do
-      it "deducts fare when" do
-        oystercard.touch_out(station)
+      before { oystercard.touch_out(station) }
+      it "deducts fare" do
         expect { oystercard.touch_out(station) }.to change{ oystercard.balance }.by(-Oystercard::MINIMUM_FARE)
       end
-    end
-      it "displays a list of journeys for exit_station" do
-        oystercard.touch_out(station)
+      it "records exit station" do
         expect(oystercard.exit_station).to eq station
       end
+      it "clears entry station record" do
+        expect(oystercard.entry_station). to eq []
+      end
+    end
 
     it "checks minimum balance on card for journey" do
       min_fare = Oystercard::MINIMUM_FARE
       expect { oystercard.touch_in(station) }.to raise_error ("Insufficient £#{min_fare} balance")
     end
 
-    it "sets entry_station  when users touches out" do
-      oystercard.touch_out(station)
-      expect(oystercard.entry_station). to eq []
-    end
+
 
 end
